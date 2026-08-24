@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit & Compliance Monitoring Portal</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; display: flex; min-height: 100vh; }
+        
+        /* Sidebar Styling */
+        .sidebar { width: 260px; background: #1e293b; padding: 24px; display: flex; flex-direction: column; gap: 24px; border-right: 1px solid #334155; }
+        .sidebar h2 { font-size: 1.25rem; color: #38bdf8; letter-spacing: 0.5px; }
+        .sidebar nav a { display: flex; align-items: center; justify-content: space-between; color: #94a3b8; text-decoration: none; padding: 12px; border-radius: 6px; margin-bottom: 4px; transition: background 0.2s; }
+        .sidebar nav a:hover, .sidebar nav a.active { background: #334155; color: #ffffff; }
+        
+        /* Main Layout */
+        .main-content { flex: 1; padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+        .header { display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 20px 28px; border-radius: 12px; border: 1px solid #334155; }
+        
+        /* Panels & Badges */
+        .panel { background: #1e293b; padding: 24px; border-radius: 12px; border: 1px solid #334155; }
+        .panel h3 { margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 12px; font-size: 1.1rem; color: #e2e8f0; }
+        .count { background: #ef4444; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: bold; }
+        
+        /* Notification Items */
+        .notif-list { display: flex; flex-direction: column; gap: 12px; }
+        .notif-card { padding: 16px; border-radius: 8px; border-left: 4px solid #38bdf8; background: #0284c71a; }
+        .notif-card.urgent { border-left-color: #ef4444; background: #ef44441a; }
+        .notif-card.warning { border-left-color: #f59e0b; background: #f59e0b1a; }
+        .notif-header { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem; color: #94a3b8; }
+        .notif-title { font-weight: 600; font-size: 0.95rem; color: #f8fafc; margin-bottom: 4px; }
+        .notif-body { font-size: 0.88rem; color: #cbd5e1; }
+        
+        /* Action Button */
+        .btn-action { margin-top: 20px; padding: 12px 20px; background: #0284c7; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; }
+        .btn-action:hover { background: #0369a1; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <h2>⚖️ Audit Monitor</h2>
+        <nav>
+            <a href="#" class="active">Overview</a>
+            <a href="#">Audit Logs</a>
+            <a href="#" class="tab-btn" id="tab-btn-notifications" role="tab">
+                Regulatory Feed <span class="count" id="notif-count">5</span>
+            </a>
+            <a href="#">Compliance Settings</a>
+        </nav>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        
+        <div class="header">
+            <h1>Audit Laws & Regulatory Feed</h1>
+            <span>Compliance Status: <strong style="color: #4ade80;">Active Monitoring</strong></span>
+        </div>
+
+        <!-- Default 5 Audit Notifications Panel -->
+        <div class="panel">
+            <h3>Recent Regulatory Alerts & Guidance</h3>
+            
+            <div id="notifications-container" class="notif-list">
+                
+                <!-- Notification 1 -->
+                <div class="notif-card urgent">
+                    <div class="notif-header"><span>REGULATORY AMENDMENT</span><span>Just Now</span></div>
+                    <div class="notif-title" id="notif-1-title">PCAOB Release 2024-004: Revised Auditing Standard for Technology Assisted Analysis</div>
+                    <div class="notif-body">Mandatory documentation updates required for algorithmic financial data sampling and audit trail verification.</div>
+                </div>
+
+                <!-- Notification 2 -->
+                <div class="notif-card warning">
+                    <div class="notif-header"><span>COMPLIANCE DEADLINE</span><span>2 Hours Ago</span></div>
+                    <div class="notif-title">SOX Section 404 Internal Control Assessment Guidance</div>
+                    <div class="notif-body">Updated SEC framework regarding cybersecurity risk management controls effective for Q3 filings.</div>
+                </div>
+
+                <!-- Notification 3 -->
+                <div class="notif-card">
+                    <div class="notif-header"><span>INTERNATIONAL STANDARD</span><span>Yesterday</span></div>
+                    <div class="notif-title">IAASB ISA 500 Revision: Audit Evidence Quality</div>
+                    <div class="notif-body">New guidance issued regarding external information sources and data authenticity verification standards.</div>
+                </div>
+
+                <!-- Notification 4 -->
+                <div class="notif-card warning">
+                    <div class="notif-header"><span>DATA PRIVACY LAW</span><span>2 Days Ago</span></div>
+                    <div class="notif-title">EU GDPR Cross-Border Audit Data Transfer Policy</div>
+                    <div class="notif-body">Strict anonymization protocols mandated when sharing European branch audit working papers across jurisdictions.</div>
+                </div>
+
+                <!-- Notification 5 -->
+                <div class="notif-card">
+                    <div class="notif-header"><span>CORPORATE GOVERNANCE</span><span>3 Days Ago</span></div>
+                    <div class="notif-title">CSRD Corporate Sustainability Due Diligence Directive</div>
+                    <div class="notif-body">Auditors must prepare independent third-party assurance protocols for ESG disclosure compliance.</div>
+                </div>
+
+            </div>
+
+            <button class="btn-action" onclick="addAuditNotification()">Simulate New Audit Regulatory Alert</button>
+        </div>
+
+    </div>
+
+    <script>
+        function addAuditNotification() {
+            const container = document.getElementById("notifications-container");
+            const countElem = document.getElementById("notif-count");
+            
+            let currentCount = parseInt(countElem.innerText);
+            currentCount += 1;
+            countElem.innerText = currentCount;
+
+            const newCard = document.createElement("div");
+            newCard.className = "notif-card urgent";
+            newCard.innerHTML = `
+                <div class="notif-header"><span>URGENT AMENDMENT</span><span>Just Now</span></div>
+                <div class="notif-title">[CRITICAL] Tax Transparency & Anti-Money Laundering Directive #${currentCount}</div>
+                <div class="notif-body">Immediate audit engagement update mandated for cross-border transaction disclosures.</div>
+            `;
+            
+            container.insertBefore(newCard, container.firstChild);
+        }
+    </script>
+</body>
+</html>
