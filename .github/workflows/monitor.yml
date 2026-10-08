@@ -1,42 +1,49 @@
-name: Scheduled Audit Monitor
+name: 24/7 Multi-Site Notice Monitor
 
 on:
   schedule:
-    # Runs every 15 minutes
-    - cron: '*/15 * * * *'
-  workflow_dispatch: # Allows manual trigger from GitHub UI
+    # Runs every 10 minutes
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Allows manual trigger anytime from GitHub UI
 
 jobs:
-  check-website:
+  run-monitor:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Restore login session
-        uses: actions/cache@v4
-        with:
-          path: sessions
-          key: portal-session-${{ hashFiles('monitor.py') }}
-          restore-keys: |
-            portal-session-
+      - name: Install System Dependencies & Tesseract
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr libtesseract-dev ffmpeg libsm6 libxext6
 
-      - name: Install Dependencies
+      - name: Install Python Packages
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          playwright install chromium
+          pip install playwright pytesseract opencv-python pillow requests
+          playwright install --with-deps chromium
 
-      - name: Run Web Monitor
+      - name: Restore Cache Files
+        uses: actions/cache@v3
+        with:
+          path: last_*.txt
+          key: notice-cache-${{ github.run_id }}
+          restore-keys: |
+            notice-cache-
+
+      - name: Run Notice Monitor
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
           SITE_USERNAME: ${{ secrets.SITE_USERNAME }}
           SITE_PASSWORD: ${{ secrets.SITE_PASSWORD }}
-        run: python monitor.py
+          # Update Linux Tesseract path dynamically in environment
+          TESSERACT_CMD: "/usr/bin/tesseract"
+        run: python main.py
