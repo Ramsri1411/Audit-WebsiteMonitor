@@ -1,5 +1,6 @@
 import os
-
+# config.py
+TESSERACT_CMD = os.getenv("TESSERACT_CMD", r"C:\Program Files\Tesseract-OCR\tesseract.exe")
 # Telegram Credentials
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "8612323305:AAFWdWUUAEaMm8MU0oLwEg83c3xNFd5uSqw")
 CHAT_ID = os.getenv("CHAT_ID", "1417372406")
